@@ -12,7 +12,6 @@ For additional information see the Model Card paper: https://arxiv.org/pdf/1810.
 * License: MIT
 * Contacts: ympaik@hotmail.com
 
-
 ## Intended Use
 
 * This is a part of porject, Deploying a Machine Learning Model on Heroku with FastAPI from Udacity Machine Learning DevOps Engineer Couse.

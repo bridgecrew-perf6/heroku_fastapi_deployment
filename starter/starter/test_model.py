@@ -7,7 +7,7 @@ from .ml import model
 
 
 @pytest.fixture
-def generate_dummy_data():
+def dummy_data():
     data_df = pd.DataFrame({
         "id": [1, 2, 3],
         "numerical_feat": [3.0, 15.0, 25.9],
@@ -16,9 +16,9 @@ def generate_dummy_data():
     return data_df
 
 
-def test_train_model(data):
-    X = data[['numerical_feat']]
-    y = data['target_feat']
+def test_train_model(dummy_data):
+    X = dummy_data[['numerical_feat']]
+    y = dummy_data['target_feat']
     trained_model = model.train_model(X, y)
     assert isinstance(
         trained_model, RandomForestClassifier), "Wrong model type"
@@ -33,9 +33,9 @@ def test_compute_model_metrics():
     assert math.isclose(fbeta, 0.6666, rel_tol=1e-04), "fbeta incorrect"
 
 
-def test_inference(data):
-    X = data[['numerical_feat']]
-    y = data['target_feat']
+def test_inference(dummy_data):
+    X = dummy_data[['numerical_feat']]
+    y = dummy_data['target_feat']
     fake_model = RandomForestClassifier()
     fake_model_ = fake_model.fit(X, y)
     preds = model.inference(fake_model_, X)

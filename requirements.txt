@@ -54,7 +54,7 @@ future==0.18.2
 gitdb==4.0.9
 GitPython==3.1.24
 grandalf==0.6
-gssapi==1.7.2
+# gssapi==1.7.2
 h11==0.12.0
 idna==3.1
 importlib-metadata==4.10.0

@@ -26,7 +26,7 @@ def train(datapath='data/census_cleaned.csv'):
     # Proces the test data with the process_data function.
     X_train, y_train, encoder, label = data.process_data(
         train, categorical_features=CAT_FEATURES,
-        label="is_salary_over50k", training=True
+        label="salary", training=True
     )
 
     # Train and save a model.

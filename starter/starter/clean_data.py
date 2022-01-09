@@ -9,9 +9,6 @@ DATA_PATH = pathlib.Path('../data/census.csv')
 def clean_data():
     data_df = pd.read_csv(DATA_PATH, skipinitialspace=True)
     data_df.replace({'?': np.nan}, inplace=True)
-    data_df['is_salary_over50k'] = \
-        (data_df['salary'].str[0] == '>').astype(int)
-    data_df.drop(columns=['salary'], inplace=True)
     return data_df
 
 

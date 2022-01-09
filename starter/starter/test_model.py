@@ -1,4 +1,5 @@
 import math
+from random import random
 import pytest
 import numpy as np
 import pandas as pd
@@ -9,10 +10,11 @@ from .ml import model
 @pytest.fixture
 def dummy_data():
     data_df = pd.DataFrame({
-        "id": [1, 2, 3],
-        "numerical_feat": [3.0, 15.0, 25.9],
-        "target_feat": ["yes", "no", "no"]
+        "id": [i for i in range(100)],
+        "numerical_feat": [random()*100 for i in range(100)],
     })
+    data_df["target_feat"] = [
+        "yes" if i > 80 else "no" for i in data_df["numerical_feat"].values]
     return data_df
 
 

@@ -10,7 +10,7 @@ from .ml import model
 @pytest.fixture
 def dummy_data():
     data_df = pd.DataFrame({
-        "id": [i for i in range(100)],
+        "id": list(range(100)),
         "numerical_feat": [random()*100 for i in range(100)],
     })
     data_df["target_feat"] = [
@@ -38,8 +38,8 @@ def test_compute_model_metrics():
 def test_inference(dummy_data):
     X = dummy_data[['numerical_feat']]
     y = dummy_data['target_feat']
-    fake_model = RandomForestClassifier()
-    fake_model_ = fake_model.fit(X, y)
-    preds = model.inference(fake_model_, X)
+    dummy_model = RandomForestClassifier()
+    _dummy_model = dummy_model.fit(X, y)
+    preds = model.inference(_dummy_model, X)
     assert isinstance(preds, np.ndarray), "The output type is not np.ndarray"
     assert len(preds) == X.shape[0], "Length of the output is not matched"

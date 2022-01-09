@@ -1,8 +1,8 @@
 import logging
 import numpy as np
 from sklearn.metrics import fbeta_score, precision_score, recall_score
-from sklearn.model_selection import KFold, cross_val_score
-from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.model_selection import StratifiedKFold, cross_val_score
+from sklearn.ensemble import RandomForestClassifier
 
 
 # Optional: implement hyperparameter tuning.
@@ -21,8 +21,8 @@ def train_model(X_train, y_train):
     model
         Trained machine learning model.
     """
-    cv = KFold(n_splits=5, shuffle=True)
-    model = GradientBoostingClassifier(n_estimators=100)
+    cv = StratifiedKFold(shuffle=True)
+    model = RandomForestClassifier(n_estimators=1000)
     model.fit(X_train, y_train)
     scores = cross_val_score(model, X_train, y_train, scoring='f1',
                              cv=cv, n_jobs=-1)

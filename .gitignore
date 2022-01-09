@@ -1,4 +1,9 @@
 aws_keys.csv
 starter/data/census.csv
-aws/
-awscliv2.zip
+starter/data/census_cleaned.csv
+
+.DS_Store
+.ipynb_checkpoints
+.pytest_cache
+.pyc
+__pycache__

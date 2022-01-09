@@ -1,4 +1,8 @@
+import logging
+import numpy as np
 from sklearn.metrics import fbeta_score, precision_score, recall_score
+from sklearn.model_selection import KFold, cross_val_score
+from sklearn.ensemble import GradientBoostingClassifier
 
 
 # Optional: implement hyperparameter tuning.
@@ -17,8 +21,13 @@ def train_model(X_train, y_train):
     model
         Trained machine learning model.
     """
-
-    pass
+    cv = KFold(n_splits=5, shuffle=True)
+    model = GradientBoostingClassifier(n_estimators=100)
+    model.fit(X_train, y_train)
+    scores = cross_val_score(model, X_train, y_train, scoring='f1',
+                             cv=cv, n_jobs=-1)
+    logging.info('f1: %.4f', np.mean(scores))
+    return model
 
 
 def compute_model_metrics(y, preds):
@@ -57,4 +66,5 @@ def inference(model, X):
     preds : np.array
         Predictions from the model.
     """
-    pass
+    y_preds = model.predict(X)
+    return y_preds

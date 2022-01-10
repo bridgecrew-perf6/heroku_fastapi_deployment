@@ -9,6 +9,7 @@ DATA_PATH = pathlib.Path('../data/census.csv')
 def clean_data():
     data_df = pd.read_csv(DATA_PATH, skipinitialspace=True)
     data_df.replace({'?': np.nan}, inplace=True)
+    data_df.dropna(inplace=True)
     return data_df
 
 

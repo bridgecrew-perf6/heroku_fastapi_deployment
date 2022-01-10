@@ -12,46 +12,45 @@ def test_welcome():
 
 
 def test_get_prediction_negative():
-    req = client.post(
-        "/predict", json={
-            "age": 39,
-            "workclass": "State-gov",
-            "fnlgt": 77516,
-            "education": "Bachelors",
-            "education-num": 13,
-            "marital-status": "Never-married",
-            "occupation": "Adm-clerical",
-            "relationship": "Not-in-family",
-            "race": "White",
-            "sex": "Male",
-            "capital-gain": 2174,
-            "capital-loss": 0,
-            "hours-per-week": 40,
-            "native-country": "United-States"
-        }
-    )
-    assert req.status_code == 200, "Status code is not 200"
-    assert req.json() == {"Predicted salary": "<=50K"}, "Wrong json output"
+    input_dict = {
+        "age": 49,
+        "workclass": "State-gov",
+        "fnlgt": 77516,
+        "education": "Bachelors",
+        "education_num": 13,
+        "marital_status": "Married-civ-spouse",
+        "occupation": "Adm-clerical",
+        "relationship": "Not-in-family",
+        "race": "White",
+        "sex": "Male",
+        "capital_gain": 2174,
+        "capital_loss": 0,
+        "hours_per_week": 40,
+        "native_country": "United-States"
+    }
+    response = client.post("/predict", json=input_dict)
+    assert response.status_code == 200, "Status code is not 200"
+    assert response.json() == {"Predicted salary": "<=50K"}, \
+        "Wrong json output"
 
 
 def test_get_prediction_positive():
-    req = client.post(
-        "/predict", json={
-            'age': 50,
-            'workclass': 'Private',
-            'fnlgt': 367260,
-            'education': 'Bachelors',
-            'education-num': 13,
-            'marital-status': 'Never-married',
-            'occupation': 'Tech-support',
-            'relationship': 'Unmarried',
-            'race': 'White',
-            'sex': 'Male',
-            'capital-gain': 14084,
-            'capital-loss': 0,
-            'hours-per-week': 45,
-            'native-country': 'Canada'
-        }
-    )
-    assert req.status_code == 200, "Status code is not 200"
-    assert req.json() == {"Predicted salary": ">50K"}, "Wrong json output"
+    input_dict = {
+        "age": 31,
+        "workclass": "Private",
+        "fnlgt": 45781,
+        "education": "Masters",
+        "education_num": 14,
+        "marital_status": "Married-civ-spouse",
+        "occupation": "Prof-specialty",
+        "relationship": "Not-in-family",
+        "race": "White",
+        "sex": "Female",
+        "capital_gain": 1020,
+        "capital_loss": 0,
+        "hours_per_week": 50,
+        "native_country": "United-States"
+    }
+    response = client.post("/predict", json=input_dict)
+    assert response.status_code == 200, "Status code is not 200"
+    assert response.json() == {"Predicted salary": ">50K"}, "Wrong json output"

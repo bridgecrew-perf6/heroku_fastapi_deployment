@@ -34,7 +34,7 @@ class InferenceRequest(BaseModel):
     capital_gain: int = Field(alias="capital-gain")
     capital_loss: int = Field(alias="capital-loss")
     hours_per_week: int = Field(alias="hours-per-week")
-    native_country: str = Field( alias="native-country")
+    native_country: str = Field(alias="native-country")
 
 
 @app.get('/')
@@ -42,8 +42,8 @@ async def welcome():
     return "Welcome, this API returns predictions on Salary"
 
 
-@app.post("/predict")
-async def get_prediction(request: InferenceRequest = Body(
+@app.post("/predict/")
+async def get_prediction(request_data: InferenceRequest = Body(
     ...,
     example={
         "age": 39,
@@ -62,15 +62,16 @@ async def get_prediction(request: InferenceRequest = Body(
         "native-country": "United-States"
     }
 )):
-    trained_model = joblib.load("model/model.joblib")
-    encoder = joblib.load("model/encoder.joblib")
-    labels = joblib.load("model/lb.joblib")
+    cwd_p = os.getcwd()
+    trained_model = joblib.load(f"{cwd_p}/starter/model/model_trained.joblib")
+    encoder = joblib.load(f"{cwd_p}/starter/model/encoder.joblib")
+    labels = joblib.load(f"{cwd_p}/starter/model/lb.joblib")
 
-    data_alias = jsonable_encoder(request, by_alias=True)
-    to_predict = pd.DataFrame.from_dict(data_alias)
+    request_dict = request_data.dict(by_alias=True)
+    request_df = pd.DataFrame(request_dict, index=[0])
     processed_data, _, _, _ = process_data(
-        to_predict, categorical_features=CAT_FEATURES, label=None,
+        request_df, categorical_features=CAT_FEATURES, label=None,
         training=False, encoder=encoder, lb=labels
     )
-    preds = inference(model=trained_model, X=np.array(processed_data))
+    preds = inference(trained_model, np.array(processed_data))
     return {"Predicted salary": preds[0]}

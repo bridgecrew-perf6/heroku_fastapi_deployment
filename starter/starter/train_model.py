@@ -18,7 +18,7 @@ CAT_FEATURES = [
 ]
 
 
-def train(datapath='data/census_cleaned.csv'):
+def train(datapath='../data/census_cleaned.csv'):
     # Add code to load in the data.
     data_df = pd.read_csv(datapath)
     # Optional enhancement, use K-fold cross validation instead of a train-test split.
@@ -38,9 +38,9 @@ def train(datapath='data/census_cleaned.csv'):
     dump(label, "../model/lb.joblib")
 
 
-def compute_score_sliced(datapath='data/census_cleaned.csv'):
+def compute_score_sliced(datapath='../data/census_cleaned.csv'):
     data_df = pd.read_csv(datapath)
-    _, test = train_test_split(data_df, test_size=0.20)
+    # _, test = train_test_split(data_df, test_size=0.20)
 
     model_trained = load("../model/model_trained.joblib")
     encoder = load("../model/encoder.joblib")
@@ -49,14 +49,12 @@ def compute_score_sliced(datapath='data/census_cleaned.csv'):
     sliced_scores_df = pd.DataFrame(
         columns=["feature", "value", "precision", "recall", "fbeta_score"])
     for cat in CAT_FEATURES:
-        for val in test[cat].unique():
-            df_temp = test[test[cat] == val]
-
+        for val in data_df[cat].unique():
+            df_temp = data_df[data_df[cat] == val]
             X_test, y_test, _, _ = data.process_data(
                 df_temp,
                 categorical_features=CAT_FEATURES,
                 label="salary", encoder=encoder, lb=label, training=False)
-
             y_preds = model_trained.predict(X_test)
 
             prc, rcl, fb1 = model.compute_model_metrics(y_test, y_preds)
@@ -70,3 +68,8 @@ def compute_score_sliced(datapath='data/census_cleaned.csv'):
                 }, ignore_index=True
             )
     sliced_scores_df.to_csv('../model/slice_output.txt', index=False)
+
+
+if __name__ == '__main__':
+    train()
+    compute_score_sliced()

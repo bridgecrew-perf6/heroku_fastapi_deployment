@@ -3,7 +3,7 @@ import logging
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from joblib import dump, load
-from ml import model, data
+from .ml import model, data
 
 # Add the necessary imports for the starter code.
 CAT_FEATURES = [

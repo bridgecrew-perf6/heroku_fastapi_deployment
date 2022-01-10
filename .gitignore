@@ -1,6 +1,7 @@
 aws_keys.csv
 starter/data/census.csv
 starter/data/census_cleaned.csv
+starter/model/model_trained.joblib
 
 .DS_Store
 .ipynb_checkpoints

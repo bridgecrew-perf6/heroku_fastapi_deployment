@@ -33,7 +33,7 @@ def train(datapath='data/census_cleaned.csv'):
     # Train and save a model.
     model_trained = model.train_model(X_train, y_train)
 
-    dump(model_trained, "../model/model.joblib")
+    dump(model_trained, "../model/model_trained.joblib")
     dump(encoder, "../model/encoder.joblib")
     dump(label, "../model/lb.joblib")
 
@@ -42,7 +42,7 @@ def compute_score_sliced(datapath='data/census_cleaned.csv'):
     data_df = pd.read_csv(datapath)
     _, test = train_test_split(data_df, test_size=0.20)
 
-    model_trained = load("../model/model.joblib")
+    model_trained = load("../model/model_trained.joblib")
     encoder = load("../model/encoder.joblib")
     label = load("../model/lb.joblib")
 

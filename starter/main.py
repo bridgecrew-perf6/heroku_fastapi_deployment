@@ -5,9 +5,9 @@ import pandas as pd
 from fastapi import FastAPI, Body
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel, Field
-from .starter.train_model import CAT_FEATURES
-from .starter.ml.model import inference
-from .starter.ml.data import process_data
+from starter.train_model import CAT_FEATURES
+from starter.ml.model import inference
+from starter.ml.data import process_data
 
 
 if "DYNO" in os.environ and os.path.isdir(".dvc"):

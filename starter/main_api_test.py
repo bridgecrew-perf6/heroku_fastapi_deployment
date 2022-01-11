@@ -1,7 +1,10 @@
 from fastapi.testclient import TestClient
+import logging
 from main import app
 
 
+logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
+logger = logging.getLogger()
 client = TestClient(app)
 
 
@@ -9,6 +12,28 @@ def test_welcome():
     req = client.get('/')
     assert req.status_code == 200, "Status code is not 200"
     assert req.json() == "Welcome, this API returns predictions on Salary", "Wrong json output"
+
+
+def test_post():
+    input_dict = {
+        "age": 49,
+        "workclass": "State-gov",
+        "fnlgt": 77516,
+        "education": "Bachelors",
+        "education_num": 13,
+        "marital_status": "Married-civ-spouse",
+        "occupation": "Adm-clerical",
+        "relationship": "Not-in-family",
+        "race": "White",
+        "sex": "Male",
+        "capital_gain": 2174,
+        "capital_loss": 0,
+        "hours_per_week": 40,
+        "native_country": "United-States"
+    }
+    response = client.post('/items', json=input_dict)
+    assert response.status_code == 200, "Status code is not 200"
+    assert response.json() == input_dict
 
 
 def test_get_prediction_negative():
@@ -28,7 +53,7 @@ def test_get_prediction_negative():
         "hours_per_week": 40,
         "native_country": "United-States"
     }
-    response = client.post("/predict", json=input_dict)
+    response = client.post('/predict', json=input_dict)
     assert response.status_code == 200, "Status code is not 200"
     assert response.json() == {"Predicted salary": "<=50K"}, \
         "Wrong json output"

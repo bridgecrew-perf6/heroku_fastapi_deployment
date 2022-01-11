@@ -3,7 +3,6 @@ import joblib
 import numpy as np
 import pandas as pd
 from fastapi import FastAPI, Body
-from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel, Field
 from starter.train_model import CAT_FEATURES
 from starter.ml.model import inference
@@ -42,7 +41,12 @@ async def welcome():
     return "Welcome, this API returns predictions on Salary"
 
 
-@app.post("/predict/")
+@app.post("/items/")
+async def create_item(item):
+    return item
+
+
+@app.post('/predict/')
 async def get_prediction(request_data: InferenceRequest = Body(
     ...,
     example={
@@ -75,3 +79,8 @@ async def get_prediction(request_data: InferenceRequest = Body(
     )
     preds = inference(trained_model, np.array(processed_data))
     return {"Predicted salary": preds[0]}
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app)

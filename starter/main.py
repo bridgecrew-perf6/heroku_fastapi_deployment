@@ -41,12 +41,12 @@ async def welcome():
     return "Welcome, this API returns predictions on Salary"
 
 
-@app.post("/items/")
+@app.post("/items")
 async def create_item(item):
     return item
 
 
-@app.post('/predict/')
+@app.post('/predict')
 async def get_prediction(request_data: InferenceRequest = Body(
     ...,
     example={

@@ -15,25 +15,13 @@ def test_welcome():
 
 
 def test_post():
-    input_dict = {
+    sample_dict = {
         "age": 49,
         "workclass": "State-gov",
-        "fnlgt": 77516,
-        "education": "Bachelors",
-        "education_num": 13,
-        "marital_status": "Married-civ-spouse",
-        "occupation": "Adm-clerical",
-        "relationship": "Not-in-family",
-        "race": "White",
-        "sex": "Male",
-        "capital_gain": 2174,
-        "capital_loss": 0,
-        "hours_per_week": 40,
-        "native_country": "United-States"
     }
-    response = client.post('/items', json=input_dict)
+    response = client.post('/items', json=sample_dict)
     assert response.status_code == 200, "Status code is not 200"
-    assert response.json() == input_dict
+    assert response.json() == sample_dict
 
 
 def test_get_prediction_negative():

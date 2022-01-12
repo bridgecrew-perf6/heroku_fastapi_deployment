@@ -2,6 +2,7 @@ aws_keys.csv
 starter/data/census.csv
 starter/data/census_cleaned.csv
 
+.vscode
 .DS_Store
 .ipynb_checkpoints
 .pytest_cache

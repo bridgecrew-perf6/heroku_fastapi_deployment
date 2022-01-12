@@ -43,7 +43,7 @@ def test_get_prediction_negative():
     }
     response = client.post('/predict', json=input_dict)
     assert response.status_code == 200, "Status code is not 200"
-    assert response.json() == {"Predicted salary": "0"}, \
+    assert response.json() == {"Predicted salary": "<=50K"}, \
         "Wrong json output"
 
 
@@ -66,4 +66,4 @@ def test_get_prediction_positive():
     }
     response = client.post("/predict", json=input_dict)
     assert response.status_code == 200, "Status code is not 200"
-    assert response.json() == {"Predicted salary": "1"}, "Wrong json output"
+    assert response.json() == {"Predicted salary": ">50K"}, "Wrong json output"

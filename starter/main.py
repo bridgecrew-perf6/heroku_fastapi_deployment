@@ -61,7 +61,12 @@ async def get_prediction(request_data: InferenceRequest):
         training=False, encoder=encoder, lb=labels
     )
     preds = inference(trained_model, np.array(processed_data))
-    return {"Predicted salary": str(preds[0])}
+    if preds[0]:
+        pred_cat = '>50K'
+    else:
+        pred_cat = '<=50K'
+
+    return {"Predicted salary": pred_cat}
 
 
 if __name__ == "__main__":

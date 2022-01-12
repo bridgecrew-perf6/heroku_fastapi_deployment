@@ -24,16 +24,22 @@ class InferenceRequest(BaseModel):
     workclass: str
     fnlgt: int
     education: str
-    education_num: int = Field(alias="education-num")
-    marital_status: str = Field(alias="marital-status")
+    # education_num: int = Field(alias="education-num")
+    # marital_status: str = Field(alias="marital-status")
+    education_num: int
+    marital_status: str
     occupation: str
     relationship: str
     race: str
     sex: str
-    capital_gain: int = Field(alias="capital-gain")
-    capital_loss: int = Field(alias="capital-loss")
-    hours_per_week: int = Field(alias="hours-per-week")
-    native_country: str = Field(alias="native-country")
+    # capital_gain: int = Field(alias="capital-gain")
+    # capital_loss: int = Field(alias="capital-loss")
+    # hours_per_week: int = Field(alias="hours-per-week")
+    # native_country: str = Field(alias="native-country")
+    capital_gain: int
+    capital_loss: int
+    hours_per_week: int
+    native_country: str
 
 
 @app.get('/')
@@ -42,30 +48,31 @@ async def welcome():
 
 
 @app.post("/items")
-async def create_item(item):
+async def create_item(item: dict):
     return item
 
 
 @app.post('/predict')
-async def get_prediction(request_data: InferenceRequest = Body(
-    ...,
-    example={
-        "age": 39,
-        "workclass": "State-gov",
-        "fnlgt": 77516,
-        "education": "Bachelors",
-        "education-num": 13,
-        "marital-status": "Never-married",
-        "occupation": "Adm-clerical",
-        "relationship": "Not-in-family",
-        "race": "White",
-        "sex": "Male",
-        "capital-gain": 2174,
-        "capital-loss": 0,
-        "hours-per-week": 40,
-        "native-country": "United-States"
-    }
-)):
+async def get_prediction(request_data: InferenceRequest):
+# async def get_prediction(request_data: InferenceRequest = Body(
+#     ...,
+#     example={
+#         "age": 39,
+#         "workclass": "State-gov",
+#         "fnlgt": 77516,
+#         "education": "Bachelors",
+#         "education-num": 13,
+#         "marital-status": "Never-married",
+#         "occupation": "Adm-clerical",
+#         "relationship": "Not-in-family",
+#         "race": "White",
+#         "sex": "Male",
+#         "capital-gain": 2174,
+#         "capital-loss": 0,
+#         "hours-per-week": 40,
+#         "native-country": "United-States"
+#     }
+# )):
     cwd_p = os.getcwd()
     trained_model = joblib.load(f"{cwd_p}/starter/model/model_trained.joblib")
     encoder = joblib.load(f"{cwd_p}/starter/model/encoder.joblib")

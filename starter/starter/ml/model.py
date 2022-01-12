@@ -22,7 +22,7 @@ def train_model(X_train, y_train):
         Trained machine learning model.
     """
     cv = StratifiedKFold(shuffle=True)
-    model = RandomForestClassifier(n_estimators=1000)
+    model = RandomForestClassifier()
     model.fit(X_train, y_train)
     scores = cross_val_score(model, X_train, y_train, scoring='f1',
                              cv=cv, n_jobs=-1)

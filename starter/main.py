@@ -2,7 +2,7 @@ import os
 import joblib
 import numpy as np
 import pandas as pd
-from fastapi import FastAPI, Body
+from fastapi import FastAPI
 from pydantic import BaseModel, Field
 from starter.train_model import CAT_FEATURES
 from starter.ml.model import inference

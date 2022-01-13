@@ -28,7 +28,14 @@ For additional information see the Model Card paper: https://arxiv.org/pdf/1810.
 
 ## Metrics
 
-* The model is evaluated by F1 score.
+* The model is evaluated by precision, recall, and F1 scores.
+* The scores are following:
+
+    | Metrics | Scores |
+    | ------- | ------ |
+    | Precision | 0.8159 |
+    | Recall | 0.5614 |
+    | F1 | 0.6651 |
 
 ## Ethical Considerations
 

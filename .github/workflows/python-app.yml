@@ -43,7 +43,6 @@ jobs:
         aws-region: us-east-2
     - name: Set up DVC
       uses: iterative/setup-dvc@v1
-    - run: dvc remote add -d s3aws s3://udacity-mlops3
     - name: Pull data
       run: |
         dvc pull

@@ -1,20 +1,26 @@
 from fastapi.testclient import TestClient
 import logging
+import pytest
 from main import app
 
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
 logger = logging.getLogger()
-client = TestClient(app)
 
 
-def test_welcome():
+@pytest.fixture
+def client():
+    with TestClient(app) as clt:
+        yield clt
+
+
+def test_welcome(client):
     req = client.get('/')
     assert req.status_code == 200, "Status code is not 200"
     assert req.json() == "Welcome, this API returns predictions on Salary", "Wrong json output"
 
 
-def test_post():
+def test_post(client):
     sample_dict = {
         "age": 49,
         "workclass": "State-gov",
@@ -24,7 +30,7 @@ def test_post():
     assert response.json() == sample_dict
 
 
-def test_get_prediction_negative():
+def test_get_prediction_negative(client):
     input_dict = {
         "age": 49,
         "workclass": "State-gov",
@@ -47,7 +53,7 @@ def test_get_prediction_negative():
         "Wrong json output"
 
 
-def test_get_prediction_positive():
+def test_get_prediction_positive(client):
     input_dict = {
         "age": 41,
         "workclass": "Private",

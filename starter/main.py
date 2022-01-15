@@ -17,6 +17,7 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
 
 
 app = FastAPI()
+MODEL_CONFIGS = {}
 
 
 class InferenceRequest(BaseModel):
@@ -48,19 +49,28 @@ async def create_item(item: dict):
     return item
 
 
+@app.on_event("startup")
+async def startup_event():
+    cwd_p = os.getcwd()
+    MODEL_CONFIGS['trained_model'] = \
+        joblib.load(f"{cwd_p}/starter/model/model_trained.joblib")
+    MODEL_CONFIGS['encoder'] = \
+        joblib.load(f"{cwd_p}/starter/model/encoder.joblib")
+    MODEL_CONFIGS['labels'] = \
+        joblib.load(f"{cwd_p}/starter/model/lb.joblib")
+
+
 @app.post('/predict')
 async def get_prediction(request_data: InferenceRequest):
-    cwd_p = os.getcwd()
-    trained_model = joblib.load(f"{cwd_p}/starter/model/model_trained.joblib")
-    encoder = joblib.load(f"{cwd_p}/starter/model/encoder.joblib")
-    labels = joblib.load(f"{cwd_p}/starter/model/lb.joblib")
     request_dict = request_data.dict(by_alias=True)
     request_df = pd.DataFrame(request_dict, index=[0])
     processed_data, _, _, _ = process_data(
         request_df, categorical_features=CAT_FEATURES, label=None,
-        training=False, encoder=encoder, lb=labels
+        training=False, encoder=MODEL_CONFIGS['encoder'],
+        lb=MODEL_CONFIGS['labels']
     )
-    preds = inference(trained_model, np.array(processed_data))
+    preds = inference(MODEL_CONFIGS['trained_model'],
+                      np.array(processed_data))
     if preds[0]:
         pred_cat = '>50K'
     else:
